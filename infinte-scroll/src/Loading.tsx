@@ -1,33 +1,15 @@
-import { LegacyRef, useEffect, useRef, useState } from "react";
-
+import { RefObject } from "react";
 import styled, { css } from "styled-components";
 
 export interface LoadingProps {
+  loadingRef: RefObject<HTMLDivElement>;
   direction: "TOP" | "BOTTOM";
 }
 
-export function Loading({ direction }: LoadingProps) {
-  const loadingRef: LegacyRef<HTMLDivElement> | undefined = useRef(null);
-
-  const [loadingIsVisible, setLoadingIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-
-      setLoadingIsVisible(entry.isIntersecting);
-    });
-
-    if (loadingRef.current === undefined) return;
-
-    observer.observe(loadingRef.current as Element);
-  }, []);
-
-  console.log("loadingIsVisible: ", loadingIsVisible);
-
+export function Loading({ loadingRef, direction }: LoadingProps) {
   return (
-    <LoadingWrapper>
-      <LoadingIcon ref={loadingRef} direction={direction}>
+    <LoadingWrapper ref={loadingRef}>
+      <LoadingIcon direction={direction}>
         <svg
           version="1.1"
           id="Слой_1"
@@ -38,7 +20,7 @@ export function Loading({ direction }: LoadingProps) {
           width="30px"
           height="50px"
           viewBox="0 0 50 100"
-          enable-background="new 0 0 50 100"
+          enableBackground="new 0 0 50 100"
           xmlSpace="preserve"
         >
           <FirstPath
